@@ -51,13 +51,13 @@ Defaults: **1.25 s settle + 2.5 s dwell per point**, with **5× playback**. Clic
 | Part of the default 36-point preview | Time |
 |---|---:|
 | Settle + dwell: 36 × 3.75 s | 135 s (2:15) |
-| Lift between heights: 24 × 20 s | 480 s |
-| Park lift: 12 × 20 s | 240 s |
+| Lift between heights: 24 × 5 s | 120 s |
+| Park lift: 12 × 5 s | 60 s |
 | Travel: 11 × 3 s | 33 s |
 | Two 90° turns: 2 × 3 s | 6 s |
-| **Total at 1×** | **894 s (14:54)** |
+| **Total at 1×** | **354 s (5:54)** |
 
-At the default **5×**, playback takes about **2:59**; at 60× it takes about 15 seconds. Playback speed changes only the animation. Halving point waits does not halve lift/travel time: the original 21:39 included 9:00 of waits plus 12:39 of motion assumptions; the first halving made 17:09, and the second makes 14:54. Motion durations are editable visual assumptions, not measured actuator speeds; dwell is elapsed time, not evidence of acquired samples.
+At the default **5×**, playback takes about **1:11**; at 60× it takes about 6 seconds. Lift and park transitions default to **5 seconds each** and remain editable under Timing. Reducing the previous 20-second transitions to 5 seconds removes 9 minutes from the earlier 14:54 sequence. Playback speed changes only the animation. Motion durations are editable visual assumptions, not measured actuator speeds; dwell is elapsed time, not evidence of acquired samples.
 
 ## Publish this full repository on GitHub Pages
 

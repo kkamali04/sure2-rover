@@ -122,10 +122,10 @@
   },
   "purpose": "simulation-and-test-planning-only",
   "preview_timing": {
-    "lift_transition_s": 20,
+    "lift_transition_s": 5,
     "rover_transition_s": 3
   },
-  "exported_at": "2026-10-07T21:15:59.149Z",
+  "exported_at": "2026-10-07T21:34:58.720Z",
   "derived": {
     "samples": [
       {

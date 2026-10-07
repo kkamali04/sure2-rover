@@ -22,8 +22,8 @@ const root=path.resolve(__dirname,'..');
    assert.equal(await page.evaluate(()=>document.documentElement.scrollHeight<=innerHeight),true,'desktop dashboard fits one viewport');
   });
   await test('half-length point waits are editable and survive JSON export/import',async()=>{
-   await reset();let p=await plan();assert.equal(p.settle_s,1.25);assert(p.stations.every(s=>s.dwell_s===2.5));
-   await page.locator('#timingBtn').click();assert(await page.locator('#settle').evaluate(el=>el.checkValidity()));assert((await page.locator('#previewDuration').innerText()).includes('14:54 = 2:15 settle/dwell + 12:39 assumed motion'));assert((await page.locator('#previewDuration').innerText()).includes('At 5×: about 2:59'));await page.locator('#settle').fill('1.5');await page.locator('#defaultDwell').fill('4');await page.locator('#applyDwell').click();await page.locator('#closeTiming').click();
+   await reset();let p=await plan();assert.equal(p.preview_timing.lift_transition_s,5);assert.equal(p.settle_s,1.25);assert(p.stations.every(s=>s.dwell_s===2.5));
+   await page.locator('#timingBtn').click();assert(await page.locator('#settle').evaluate(el=>el.checkValidity()));assert((await page.locator('#previewDuration').innerText()).includes('5:54 = 2:15 settle/dwell + 3:39 assumed motion'));assert((await page.locator('#previewDuration').innerText()).includes('At 5×: about 1:11'));await page.locator('#settle').fill('1.5');await page.locator('#defaultDwell').fill('4');await page.locator('#applyDwell').click();await page.locator('#closeTiming').click();
    p=await plan();assert.equal(p.settle_s,1.5);assert(p.stations.every(s=>s.dwell_s===4));assert.equal(await page.evaluate(()=>PlannerCore.stationaryTime(PlannerUI.getPlan())),198);
    await openSettings();const d=page.waitForEvent('download');await page.locator('#jsonBtn').click();const bytes=fs.readFileSync(await (await d).path());const saved=JSON.parse(bytes);assert.equal(saved.settle_s,1.5);assert(saved.stations.every(s=>s.dwell_s===4));await page.locator('#resetBtn').click();await page.locator('#importFile').setInputFiles({name:'timing.json',mimeType:'application/json',buffer:bytes});await page.waitForFunction(()=>PlannerUI.getPlan().settle_s===1.5);await page.locator('#closeSettings').click();await reset();
   });
@@ -59,7 +59,7 @@ const root=path.resolve(__dirname,'..');
    await page.locator('#contextX').fill('410');await page.locator('#contextY').fill('240');await page.locator('#contextDwell').fill('18');await page.locator('#applyContext').click();
    const s=(await plan()).stations[1];assert.equal(s.x_mm,410);assert.equal(s.y_mm,240);assert.equal(s.dwell_s,18);
    await openSettings();const download=page.waitForEvent('download');await page.locator('#jsonBtn').click();const file=await (await download).path();const data=JSON.parse(fs.readFileSync(file,'utf8'));
-   assert.deepEqual(data.preview_timing,{lift_transition_s:20,rover_transition_s:3});assert.equal(data.derived.sample_count,36);
+   assert.deepEqual(data.preview_timing,{lift_transition_s:5,rover_transition_s:3});assert.equal(data.derived.sample_count,36);
    await page.locator('#importFile').setInputFiles({name:'roundtrip.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(data))});
    await page.waitForFunction(()=>window.PlannerUI.getPlan().stations[1].dwell_s===18);await page.locator('#closeSettings').click();
   });
@@ -97,7 +97,7 @@ const root=path.resolve(__dirname,'..');
   await test('slow preview has distinct lift, park, settle and dwell phases and freezes edits',async()=>{
    await reset();const events=await page.evaluate(()=>window.PlannerUI.previewEvents());
    assert.equal(events.filter(e=>e.phase==='Lift transition (assumed)').length,24);assert.equal(events.filter(e=>e.phase==='Lift park (assumed)').length,12);
-   assert(events.filter(e=>e.phase.includes('Lift')).every(e=>e.end-e.start===20));assert.equal(events.at(-1).end,894);
+   assert(events.filter(e=>e.phase.includes('Lift')).every(e=>e.end-e.start===5));assert.equal(events.at(-1).end,354);
    await page.locator('#previewBtn').click();assert(await page.locator('#selectedX').isDisabled());assert(await page.locator('#deleteStation').isDisabled());
    await page.locator('#stopBtn').click();assert(await page.locator('#selectedX').isEnabled());
   });
@@ -144,7 +144,7 @@ const root=path.resolve(__dirname,'..');
   });
   await test('idle Next station starts paused, timeline End reaches final time, and Reset restores Pause label',async()=>{
    await reset();await page.locator('#previewTab').click();assert(await page.locator('#nextStationBtn').isEnabled());await page.locator('#nextStationBtn').click();await page.waitForFunction(()=>document.getElementById('simStatus').textContent.includes('S2'));
-   assert.equal(await page.locator('#pauseBtn').innerText(),'Resume');await page.locator('#previewTimeline').focus();await page.keyboard.press('End');await page.waitForFunction(()=>document.getElementById('simStatus').textContent.includes('Preview complete'));assert.equal(await page.locator('#previewClock').innerText(),'14:54 / 14:54');assert(await page.locator('#stopBtn').isEnabled());await page.locator('#stopBtn').click();assert.equal(await page.locator('#previewClock').innerText(),'0:00');assert.equal(await page.locator('#pauseBtn').innerText(),'Pause');
+   assert.equal(await page.locator('#pauseBtn').innerText(),'Resume');await page.locator('#previewTimeline').focus();await page.keyboard.press('End');await page.waitForFunction(()=>document.getElementById('simStatus').textContent.includes('Preview complete'));assert.equal(await page.locator('#previewClock').innerText(),'5:54 / 5:54');assert(await page.locator('#stopBtn').isEnabled());await page.locator('#stopBtn').click();assert.equal(await page.locator('#previewClock').innerText(),'0:00');assert.equal(await page.locator('#pauseBtn').innerText(),'Pause');
    await page.locator('#previewBtn').click();await page.locator('#pauseBtn').click();await page.locator('#stopBtn').click();assert.equal(await page.locator('#pauseBtn').innerText(),'Pause');await page.locator('#editTab').click();
   });
   await test('compact homepage hides settings and imports; debug tab opens the remote UI directly',async()=>{
