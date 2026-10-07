@@ -11,6 +11,7 @@ import argparse
 import hmac
 import hashlib
 import ipaddress
+import io
 import json
 import logging
 import math
@@ -18,6 +19,7 @@ import secrets
 import threading
 import time
 import webbrowser
+import zipfile
 from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from logging.handlers import RotatingFileHandler
@@ -155,7 +157,7 @@ class Controller:
             self.logger.addHandler(session_handler)
         self.validation = ValidationRun(self.run_id, self.live, self.clock, self._log, self.run_directory)
         self._log("session_started", software_sha256={name: hashlib.sha256((Path(__file__).parent / name).read_bytes()).hexdigest()
-                  for name in ("remote_controller.py", "remote_controller.html", "validation_run.py", "validation_panel.js", "station_trials.py", "telemetry.py", "hardware_owner.py", "ContainmentIQ_Cabinet_Planner.html")
+                  for name in ("remote_controller.py", "remote_controller.html", "validation_run.py", "validation_panel.js", "motion_calibration.py", "station_trials.py", "telemetry.py", "hardware_owner.py", "ContainmentIQ_Cabinet_Planner.html")
                   if (Path(__file__).parent / name).is_file()})
         self._log('retention_policy', maximum_sessions=10, maximum_total_bytes=90_000_000,
                   event_log_limit='4 MB plus one 4 MB backup per session; oldest events rotate')
@@ -226,6 +228,27 @@ class Controller:
     def validation_status(self):
         with self.lock:
             return dict(self.validation.status(), telemetry=self.telemetry.status())
+
+    def export_session(self):
+        with self.lock:
+            if self.armed or self.neutral_pending or self.validation.active:
+                raise ControllerError('STOP and finish/cancel timers before exporting the session', 409)
+            if not self.run_directory:
+                raise ControllerError('This controller was started without disk logging', 409)
+            for handler in self.logger.handlers:
+                handler.flush()
+            archive = io.BytesIO()
+            with zipfile.ZipFile(archive, 'w', zipfile.ZIP_DEFLATED) as bundle:
+                # Fixed allowlist; never include tokens, arbitrary files or another session.
+                for name in ('session.json', 'validation.json', 'controller_log.jsonl.1', 'controller_log.jsonl'):
+                    path = self.run_directory / name
+                    if path.is_file() and not path.is_symlink():
+                        bundle.writestr(name, path.read_bytes())
+                bundle.writestr('EXPORT_NOTE.txt',
+                    'Snapshot of this local session. Raw commands/responses and operator records are evidence, '
+                    'not proof of position or sensor acquisition. Logs are bounded and older events may have '
+                    'rotated out. Export important tests before starting more sessions. No credentials included.\n')
+            return archive.getvalue()
 
     def session(self):
         self._log('local_session_connected', note='Browser bootstrap/reconnect; explicit rearming required, existing evidence retained')
@@ -472,6 +495,10 @@ class ControllerHandler(BaseHTTPRequestHandler):
                 self._reply(200, self.server.controller.session())
             elif path == "/api/status":
                 self._reply(200, self.server.controller.status())
+            elif path == "/api/session-export":
+                self._reply(200, self.server.controller.export_session(), 'application/zip')
+            elif path == "/calibration-test-plan":
+                self._reply(200, (Path(__file__).parent / 'CALIBRATION_TEST_PLAN.md').read_bytes(), 'text/plain; charset=utf-8')
             elif path == "/api/validation":
                 self._reply(200, self.server.controller.validation_status())
             elif path in {"/", "/planner", "/validation_panel.js", "/preview/vendor/three.min.js", "/preview/assets.js", "/preview/scene.js"}:

@@ -42,7 +42,19 @@ An already-running controller of the requested mode is reused. An occupied/misma
 3. Open the local Debug controller at `http://127.0.0.1:8766/debug`. It starts disarmed. The operator arms and holds direction controls; releasing commands neutral. STOP/Space/Escape disarm. Reconnect requires explicit rearming.
 4. Use the controller's stopped-state telemetry and test-record tools. Raw commands, responses and observations are logged under `test_runs`; connection faults also appear in `controller_log.jsonl`. Retention: latest 10 managed sessions, 90 MB budget; runtime data is excluded from Git.
 
+The local Debug controller can send manual motor commands to a connected rover. The public Pages copy is disabled because it has no local Python bridge. Connecting the planner route to physical movement and sampling is the end goal; the existing controller supplies the communication foundation, not measured position or automatic navigation.
+
 No sequence of planner points is executed automatically. Accurate physical XY, lift control/feedback and airflow sensor acquisition are not implemented. Catalog dimensions and the lift model are provisional. Physical turning, calibration, stopping distance and a 5 mm tolerance still require hardware testing.
+
+## Preliminary calibration and route draft
+
+No physical calibration measurements have been recorded yet. Follow the [calibration test plan](CALIBRATION_TEST_PLAN.md): verify manual controls with wheels raised, measure a clear floor lane and the assembled footprint, then record repeated straight-travel, stopping and left/right-turn trials. A one-foot-square box does not provide one foot of rover travel; the plan explains the clearance calculation.
+
+In local **Debug → Motion calibration and preliminary route draft**, save each trial's PWM, drive interval, measured distance/angle, conditions and notes. Use software-example evidence in simulation. After loading a planner design, **Prepare timed-route draft** uses at least three trials per required direction under matching conditions, records the source trial IDs and flags extrapolated distances/angles. Download its JSON to review estimated movements and manual height checks. The compiler sends no commands, and physical route execution is disabled. This is a preliminary draft requiring further implementation and testing, not a calibrated autonomous scan.
+
+Timed movement will remain open-loop: it can estimate displacement but cannot confirm arrival or correct slip. Measured position feedback and calibration to the chamber are needed for closed-loop X/Y; lift feedback and the airflow sensor interface are separate work. Next planned hardware work is gathering travel/turn measurements, not demonstrating a finished scan.
+
+Local sessions automatically save timestamped motor requests, returned raw responses, faults, stops/reconnections and operator entries. **Download complete session ZIP** after STOP exports retained raw logs plus the report, including calibration records. Browser reconnects retain the current session; starting the controller creates another. Retention is bounded to the latest 10 managed sessions with a 90 MB budget; active sessions are protected and old raw events can rotate out. Export important tests before more sessions. Runtime logs and exported test evidence should stay out of GitHub.
 
 ## Timing
 

@@ -7,6 +7,7 @@ from pathlib import Path
 from rover_test import validate_plan
 from station_trials import trial_record, summarize
 from session_storage import prune
+import motion_calibration
 
 
 def utc():
@@ -20,6 +21,7 @@ class ValidationRun:
         self.active = None
         self.data = dict(run_id=run_id, live=live, started_at=utc(),
                          observations=[], plan=None, schedule=[], samples=[], next_index=0, station_trials=[],
+                         calibration_trials=[], timed_route_draft=None,
                          limits="No automatic navigation, lift control, sensor capture, or measured position. "
                                 "Physical results are operator reports; timer completion is not a measurement.")
         self.save()
@@ -36,6 +38,7 @@ class ValidationRun:
     def status(self):
         result = copy.deepcopy(self.data)
         result['station_summary'] = summarize(self.data['station_trials'])
+        result['calibration_summary'] = motion_calibration.summary(self.data['calibration_trials'])
         result['timer'] = None
         if self.active:
             sample = self.data['schedule'][self.active['index']]
@@ -106,8 +109,26 @@ class ValidationRun:
             if len(checked['schedule']) > 600 or any(s['settle_s'] > 3600 or s['dwell_s'] > 3600 for s in checked['schedule']):
                 raise ValueError('Plan limit: 600 samples and 3600 seconds per timing phase')
             self.data.update(plan=copy.deepcopy(plan), schedule=checked['schedule'],
-                             plan_warnings=checked['warnings'], next_index=0)
+                             plan_warnings=checked['warnings'], next_index=0, timed_route_draft=None)
             self.emit('plan_imported', samples=len(checked['schedule']), stationary_seconds=checked['acquisition_seconds'])
+            self.save()
+        elif action == 'calibration_trial':
+            if armed or neutral_pending or self.active:
+                raise ValueError('STOP and wait for neutral before saving a calibration trial')
+            record = motion_calibration.trial(payload, self.data['calibration_trials'], utc())
+            if not self.data['live'] and record['evidence'] == 'physical_manual':
+                raise ValueError('Simulator sessions accept software examples only')
+            self.data['calibration_trials'].append(record)
+            self.data['timed_route_draft'] = None
+            self.emit('manual_motion_calibration', **record)
+            self.save()
+        elif action == 'compile_timed_draft' and set(payload) == {'action', 'profile'}:
+            if armed or neutral_pending or self.active:
+                raise ValueError('STOP and wait for neutral before preparing a draft')
+            draft = motion_calibration.compile_draft(self.data['plan'], self.data['calibration_trials'], payload['profile'])
+            self.data['timed_route_draft'] = draft
+            self.emit('timed_route_draft_prepared', hardware_execution_enabled=False,
+                      steps=len(draft['steps']), estimated_rover_motion_seconds=draft['estimated_rover_motion_seconds'])
             self.save()
         elif action == 'station_trial':
             if armed or neutral_pending or self.active:

@@ -43,7 +43,7 @@ async function until(check, label) {
   };
   let browser, page;
   const results = [], errors = [];
-  let expectedNetworkFailure=false;
+  let expectedNetworkFailure=false,expectedCalibrationRejections=0;
   try {
     await until(async () => {
       if (startupError) throw startupError;
@@ -55,7 +55,7 @@ async function until(check, label) {
     page = await context.newPage();
     page.setDefaultTimeout(10000);
     page.on('pageerror', error => errors.push(error.message));
-    page.on('console', message => { if (message.type() === 'error'&&!expectedNetworkFailure) errors.push(message.text()); });
+    page.on('console', message => { if(message.type()==='error'&&expectedCalibrationRejections&&message.text().includes('422')){expectedCalibrationRejections--;return;}if (message.type() === 'error'&&!expectedNetworkFailure) errors.push(message.text()); });
     await page.goto(url+'/debug');
     const ready = () => until(() => page.locator('#armButton').isEnabled(), 'ARM available');
     const arm = async () => {
@@ -172,6 +172,27 @@ async function until(check, label) {
       await page.locator('#checkNotes').fill('Browser simulation only; physical pivot not tested.');
       await page.locator('#saveObservation').click();
       await until(async () => (await (await fetch(url+'/api/validation')).json()).observations.length===1, 'saved observation');
+    });
+    await test('calibration trials persist and export a non-executing route draft and raw-session ZIP',async()=>{
+      let driveRequests=0;const watch=r=>{if(r.url().endsWith('/api/drive'))driveRequests++;};page.on('request',watch);
+      await page.locator('#testPlanFile').setInputFiles(path.join(root,'example_plan_2x6.json'));
+      await until(async()=> (await (await fetch(url+'/api/validation')).json()).plan?.stations.length===12,'loaded draft plan');
+      await page.locator('#calibrationDraft summary').click();
+      for(const [id,value] of [['calPWM','0.10'],['calSurface','software test floor'],['calConfiguration','synthetic fixture'],['calDuration','1'],['calNotes','Software example only; no rover measured']])await page.locator('#'+id).fill(value);
+      expectedCalibrationRejections=1;const missing=page.waitForResponse(r=>r.url().endsWith('/api/validation')&&r.request().method()==='POST');await page.locator('#compileDraft').click();assert.equal((await missing).status(),422);await until(()=>expectedCalibrationRejections===0,'expected missing-calibration rejection');
+      for(const direction of ['forward','left']){
+        await page.locator('#calDirection').selectOption(direction);await page.locator('#calDisplacement').fill(direction==='forward'?'100':'90');
+        for(let i=0;i<3;i++){const response=page.waitForResponse(r=>r.url().endsWith('/api/validation')&&r.request().method()==='POST');await page.locator('#saveCalibration').click();assert.equal((await response).status(),200);await until(async()=>!(await page.locator('#validationMessage').innerText()).startsWith('Not saved'),'trial saved');}
+      }
+      const compiled=page.waitForResponse(r=>r.url().endsWith('/api/validation')&&r.request().method()==='POST');await page.locator('#compileDraft').click();assert.equal((await compiled).status(),200);
+      await until(async()=>await page.locator('#downloadDraft').isEnabled(),'draft ready');
+      const download=page.waitForEvent('download');await page.locator('#downloadDraft').click();const draft=JSON.parse(fs.readFileSync(await (await download).path(),'utf8'));
+      assert.equal(draft.hardware_execution_enabled,false);assert.equal(draft.calibration_trials.length,6);assert.equal(draft.measured_position,null);
+      assert.equal(draft.steps.filter(s=>s.kind==='estimated_motion').length,13);
+      const zipDownload=page.waitForEvent('download');await page.locator('#downloadSession').click();const zip=fs.readFileSync(await (await zipDownload).path());assert.equal(zip.subarray(0,2).toString(),'PK');
+      const persisted=await(await fetch(url+'/api/validation')).json();assert.equal(persisted.calibration_trials.length,6);assert(persisted.saved_to);
+      assert.equal((await fetch(url+'/calibration-test-plan')).status,200);await demand(0,0,false);assert.equal(driveRequests,0);page.off('request',watch);
+      await page.locator('#calibrationDraft summary').click();
     });
     let exported;
     await test('planner defaults to 36 targets and imports the legacy 18-target design', async () => {

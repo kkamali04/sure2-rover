@@ -10,7 +10,7 @@
  <label>Check <select id="checkName"><option>Forward / reverse</option><option>Left pivot (A alone)</option><option>Right pivot (D alone)</option><option>W+A / W+D steering</option><option>S+A / S+D steering</option><option>Release all keys stops wheels</option><option>Release steering key resumes straight</option><option>STOP / Space / Escape</option><option>Window focus loss stops wheels</option><option>Connection / other issue</option></select></label>
  <label>Result <select id="checkResult"><option value="not_tested">Not tested</option><option value="pass">Observed pass</option><option value="fail">Observed failure</option></select></label>
  <p><textarea id="checkNotes" rows="3" maxlength="2000" style="width:100%" placeholder="What did the wheels actually do? Include PWM and any error."></textarea></p>
- <button id="saveObservation">Save observation</button> <button id="downloadRecord">Download session report</button>
+ <button id="saveObservation">Save observation</button> <button id="downloadRecord">Download session report</button> <button id="downloadSession">Download complete session ZIP</button>
  <p id="observationCount"></p>
  <h3>2. Load your design</h3>
  <p><a href="/planner">Open cabinet planner</a> — edit or import your design, then export <strong>Complete plan JSON</strong>. Import that file below. Changing tabs stops and disarms the controller.</p>
@@ -46,7 +46,23 @@
  <p>Press STOP before starting a timer. Arming is blocked during settle/dwell. Each next target requires your confirmation. STOP, a hidden tab, connection failure or shutdown cancels an active timer. A finished timer does not mean sensor data was collected.</p>
  <h3>Received rover fields</h3><button id="readTelemetry">Read battery + IMU (stopped)</button><p id="telemetryReadStatus" role="status"></p><p>Missing data stay missing. Recent responses do not prove fresh sensor readings. These units describe the reference firmware; the installed version is still unverified. PWM is a command, never measured speed. For a stationary discovery capture, use the separate Read telemetry launcher after closing live control.</p>
  <div id="telemetryFields" style="overflow-x:auto">No rover telemetry observed.</div>
- <p id="validationMessage" role="status"></p>`;
+ <details id="calibrationDraft"><summary><strong>5. Motion calibration and preliminary route draft</strong></summary>
+ <p>Operate the manual controls yourself, STOP, then record what you measured. A command log cannot measure travel distance. Use at least three trials for each direction at the same PWM, surface and load. <a href="/calibration-test-plan">Read the test plan</a>.</p>
+ <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px">
+ <label>Direction <select id="calDirection"><option value="forward">Forward</option><option value="reverse">Reverse</option><option value="left">Left pivot</option><option value="right">Right pivot</option></select></label>
+ <label>Commanded PWM <input id="calPWM" type="number" min="0.05" max="0.25" step="0.01" placeholder="e.g. 0.10"></label>
+ <label>Drive interval · s <input id="calDuration" type="number" min="0.05" max="120" step="any"></label>
+ <label><span id="calDisplacementLabel">Start-to-rest distance · mm</span><input id="calDisplacement" type="number" min="0" step="any"></label>
+ <label>Release-to-rest travel · mm (optional) <input id="calStopDistance" type="number" min="0" step="any"></label>
+ <label>Surface / test area <input id="calSurface" maxlength="200" placeholder="Describe the actual floor"></label>
+ <label>Rover/load/battery condition <input id="calConfiguration" maxlength="200" placeholder="Keep trials in the same condition"></label>
+ <label>Evidence <select id="calEvidence"><option value="software_example">Software example only</option><option value="physical_manual">Physical manual measurement</option></select></label>
+ <label>Drive interval source <select id="calDurationSource"><option value="stopwatch_video">Stopwatch / video</option><option value="command_timestamps">Command timestamps (not motor timing)</option></select></label>
+ </div><p><textarea id="calNotes" rows="2" maxlength="2000" style="width:100%" placeholder="Required: measuring method, battery voltage if observed, wheel behavior, drift, or software-example label."></textarea></p>
+ <button id="saveCalibration">Save calibration trial</button><button id="compileDraft">Prepare timed-route draft</button><button id="downloadDraft">Download draft JSON</button>
+ <p id="calibrationSummary"></p><p id="timedDraftSummary"></p>
+ <p>Preparing/downloading a draft sends no movement commands. Physical route execution is not implemented. Estimated times are open-loop; X/Y remain targets. No lift control or sensor acquisition is performed.</p>
+ </details><p id="validationMessage" role="status"></p>`;
  const $=id=>document.getElementById(id);
  let data=null,busy=false,renderedPlan=null,polling=false,stationPlan=null,telemetry=null;
  const message=text=>{$('validationMessage').textContent=text;};
@@ -94,6 +110,14 @@
    $('cancelSample').disabled=!data.timer;
    $('sampleTimer').textContent=data.timer?`${data.timer.phase.toUpperCase()}: ${data.timer.remaining_s.toFixed(1)} seconds remaining`:`${data.samples.filter(s=>s.result==='timer_completed').length} timers completed; ${data.samples.filter(s=>s.result==='cancelled').length} cancelled. Waiting for your next action.`;
    const mapKey=JSON.stringify([data.plan,data.next_index]);if(mapKey!==renderedPlan){renderedPlan=mapKey;drawPlan();}
+   const blocked=controller.armed||controller.neutralPending||!!data.timer||!controller.connected;
+   $('downloadSession').disabled=blocked;
+   $('saveCalibration').disabled=blocked;$('compileDraft').disabled=blocked||!data.plan;
+   $('downloadDraft').disabled=!data.timed_route_draft;
+   $('calEvidence').querySelector('[value="physical_manual"]').disabled=!data.live;
+   $('calibrationSummary').textContent=(data.calibration_summary||[]).map(g=>`${g.direction}: ${g.count} trials, ${g.mean_effective_rate.toFixed(2)} ${g.units} effective displacement/interval, spread ${g.sample_sd===null?'not available':g.sample_sd.toFixed(2)}; PWM ${g.pwm}; ${g.surface}; ${g.configuration}; ${g.evidence}`).join(' | ')||'No calibration measurements saved. Values are not inferred from motor commands.';
+   const draft=data.timed_route_draft;
+   $('timedDraftSummary').textContent=draft?`${draft.status}: ${draft.steps.filter(s=>s.kind==='estimated_motion').length} estimated motion legs, ${draft.estimated_rover_motion_seconds.toFixed(2)} s rover motion plus ${draft.stationary_seconds.toFixed(2)} s settle/dwell; excludes manual positioning/lift work. ${draft.steps.filter(s=>s.extrapolated).length} legs extrapolate beyond trial distances/angles. Hardware execution disabled.`:'No timed-route draft prepared. Motion measurements are required first.';
  }
  function fmt(value){return value===null||value===undefined?'unknown':Number(value).toFixed(2);}
  function table(id,headers,rows){const holder=$(id);holder.replaceChildren();const t=document.createElement('table');t.style.cssText='border-collapse:collapse;font-size:12px;width:100%';for(const [i,row] of [headers,...rows].entries()){const tr=document.createElement('tr');for(const value of row){const cell=document.createElement(i===0?'th':'td');cell.style.cssText='text-align:left;border-bottom:1px solid #ddd;padding:6px';cell.textContent=String(value);tr.append(cell);}t.append(tr);}holder.append(t);}
@@ -110,11 +134,18 @@
  };
  $('startSample').onclick=()=>post({action:'arrived',index:data.next_index,confirmation:$('arrivalMode').value,notes:$('arrivalNotes').value});
  $('cancelSample').onclick=()=>post({action:'cancel_timer'});
+ const calNumber=id=>{if(!$(id).value.trim())throw Error('Enter '+id+'; blank is not zero.');const n=Number($(id).value);if(!Number.isFinite(n))throw Error('Enter a finite value for '+id);return n;};
+ const calProfile=()=>({pwm:calNumber('calPWM'),surface:$('calSurface').value.trim(),configuration:$('calConfiguration').value.trim(),evidence:$('calEvidence').value,duration_source:$('calDurationSource').value});
+ $('calDirection').onchange=()=>{$('calDisplacementLabel').textContent=['left','right'].includes($('calDirection').value)?'Start-to-rest rotation magnitude · deg':'Start-to-rest distance · mm';};
+ $('saveCalibration').onclick=()=>{try{void post({action:'calibration_trial',...calProfile(),direction:$('calDirection').value,duration_s:calNumber('calDuration'),displacement:calNumber('calDisplacement'),stop_distance_mm:$('calStopDistance').value.trim()?calNumber('calStopDistance'):null,notes:$('calNotes').value});}catch(e){message(e.message);}};
+ $('compileDraft').onclick=()=>{try{void post({action:'compile_timed_draft',profile:calProfile()});}catch(e){message(e.message);}};
+ $('downloadDraft').onclick=()=>{if(!data.timed_route_draft)return;const url=URL.createObjectURL(new Blob([JSON.stringify(data.timed_route_draft,null,2)],{type:'application/json'}));const link=document.createElement('a');link.href=url;link.download='sure2-timed-route-draft.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
  $('downloadRecord').onclick=async()=>{
    try{const response=await fetch('/api/validation',{cache:'no-store'});if(!response.ok)throw Error('Report unavailable');const report=await response.json();
      const url=URL.createObjectURL(new Blob([JSON.stringify(report,null,2)],{type:'application/json'}));const link=document.createElement('a');link.href=url;link.download=`rover-test-${report.run_id}.json`;link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
    }catch(error){message(error.message);}
  };
+ $('downloadSession').onclick=async()=>{try{const response=await fetch('/api/session-export',{cache:'no-store'});if(!response.ok)throw Error('STOP and cancel timers before downloading logs.');const url=URL.createObjectURL(await response.blob());const link=document.createElement('a');link.href=url;link.download=`sure2-session-${data.run_id}.zip`;link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);message('Downloaded this session: raw retained logs and reports. Keep it outside the Git repository.');}catch(error){message(error.message);}};
  async function poll(){if(polling||busy)return;polling=true;try{const responses=await Promise.all(['/api/validation','/api/status'].map(path=>fetch(path,{cache:'no-store',signal:AbortSignal.timeout(3000)})));if(responses.some(r=>!r.ok))throw Error('Session record unavailable.');const [report,status]=await Promise.all(responses.map(r=>r.json()));data=report;telemetry=status.telemetry;render();}catch(error){message(error.message);}finally{polling=false;}}
  void poll();setInterval(poll,500);
 })();

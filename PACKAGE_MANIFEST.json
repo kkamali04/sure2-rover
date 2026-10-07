@@ -32,14 +32,19 @@
       "sha256": "081c5ad1a039ed538352d7d3d76f055f3c3e1ef3168ef6ba1dfb68d6ae25dcce"
     },
     {
+      "path": "CALIBRATION_TEST_PLAN.md",
+      "bytes": 8424,
+      "sha256": "77b81c10ddbf70cfbd06d0b16a722cc7e931561923499db4fca9371182ec4a6d"
+    },
+    {
       "path": "ContainmentIQ_Cabinet_Planner.html",
       "bytes": 89803,
       "sha256": "ee36837b85aadfc2e7bcece7f8c9a0a950b85178d5be482380cda0aac9ae80cd"
     },
     {
       "path": "PROJECT_STATE.md",
-      "bytes": 1879,
-      "sha256": "a4d53f7eb5675f703f4c4dccdfd607734bd188e50c298a4c47740e914073a6fd"
+      "bytes": 2508,
+      "sha256": "efeea9fddf4c693279b09bb171e40bb24118d577631a9ece8fd17b668f9c85b5"
     },
     {
       "path": "PUBLISH_GITHUB.bat",
@@ -48,13 +53,13 @@
     },
     {
       "path": "README.md",
-      "bytes": 9550,
-      "sha256": "04c05638d5b7000373a8a2fb21152060c7ff9c6ad8358033e320f010151c9cf9"
+      "bytes": 11980,
+      "sha256": "4aae3e757122f4a35512535b5a53843abcd5cbdfb9afc4cf32335dd4f4788b08"
     },
     {
       "path": "REPOSITORY_README.md",
-      "bytes": 9550,
-      "sha256": "04c05638d5b7000373a8a2fb21152060c7ff9c6ad8358033e320f010151c9cf9"
+      "bytes": 11980,
+      "sha256": "4aae3e757122f4a35512535b5a53843abcd5cbdfb9afc4cf32335dd4f4788b08"
     },
     {
       "path": "START_CONTROLLER.bat",
@@ -202,6 +207,11 @@
       "sha256": "4c12668c5ba3b34072f6d3dbb7882f91090178dd85def52469ae5a7a0859695e"
     },
     {
+      "path": "motion_calibration.py",
+      "bytes": 8066,
+      "sha256": "5792dbb5ebba62999ce79480284b4820bc3a22ee580b1381b8a4d24e8aeb7946"
+    },
+    {
       "path": "package-lock.json",
       "bytes": 1131,
       "sha256": "3a3f268197be0cc7127f5de0332ac517bbd02197c2f940abc78b8b4496e2250b"
@@ -243,8 +253,8 @@
     },
     {
       "path": "remote_controller.py",
-      "bytes": 29947,
-      "sha256": "b9f639193e4abed891ac369bd81ecf2f63dfe40164bc2e622c27a4494cad96de"
+      "bytes": 31701,
+      "sha256": "433876a081db0593bd45077dcae76cd983a442c7b6485de1909e095d4dcd4401"
     },
     {
       "path": "requirements.txt",
@@ -292,6 +302,11 @@
       "sha256": "c20d80b034215ea1859ae852c1e22eeba004e8a6d84d5fa7a977ea9834816e0d"
     },
     {
+      "path": "tests/test_motion_calibration.py",
+      "bytes": 6801,
+      "sha256": "28e029916aebb2e4a55771ac1f2db7a097c5d19521e3f7ad30b46fa744dcd529"
+    },
+    {
       "path": "tests/test_planner_core.cjs",
       "bytes": 7917,
       "sha256": "e6977cff8f02088cc7671c1d7ca441e0bfe1412016311dccb6d076c0f696f90d"
@@ -308,8 +323,8 @@
     },
     {
       "path": "tests/test_remote_browser.cjs",
-      "bytes": 18210,
-      "sha256": "37c7cb46170bcf3a11efeedeee5253ef26d5587d95d1fa23b24d617c91c92a10"
+      "bytes": 21303,
+      "sha256": "5898f8c98cfdd8b53941e35c91c73db429a2c7c9147084f87d99b9c196e3318c"
     },
     {
       "path": "tests/test_remote_integration.py",
@@ -353,13 +368,13 @@
     },
     {
       "path": "validation_panel.js",
-      "bytes": 17479,
-      "sha256": "06d2ecbaa30c9ac889d00347ef06b29c4039da070d5bec09dfcd5f3d0123b0d6"
+      "bytes": 23408,
+      "sha256": "8cecb62cb7762fdc64c03699c88b8dcb639787cf6c0659f09f0b257df37fc32e"
     },
     {
       "path": "validation_run.py",
-      "bytes": 8198,
-      "sha256": "3ea570b7673d61923b07c20eaec2b2c4f1b02e46ee085b57fd084276059088cf"
+      "bytes": 9707,
+      "sha256": "e3a2b182b43697f0d0a4b9fbf508c69beb763e2c031bd1ae6ccd9ba94d366b7b"
     }
   ]
 }
