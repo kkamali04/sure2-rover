@@ -33,13 +33,13 @@
     },
     {
       "path": "ContainmentIQ_Cabinet_Planner.html",
-      "bytes": 89561,
-      "sha256": "5d8b1bd9f7a7e6b1c2a2c5313acc3e5489d56f98ed08af694ce1d1f24c76e5e9"
+      "bytes": 89808,
+      "sha256": "a6d8f12488abae75489619e0b8bff85b6284328606f64781206965f2b2ae6586"
     },
     {
       "path": "PROJECT_STATE.md",
-      "bytes": 1719,
-      "sha256": "febe632ee4f14ff79774d55f974816378db7f193bfb95c1e1155efffbfd06c46"
+      "bytes": 1870,
+      "sha256": "3e26c5402bbd3d1c0767f890af08a11dc1dde3e13cff18f04063208f5faa1f9c"
     },
     {
       "path": "PUBLISH_GITHUB.bat",
@@ -48,13 +48,13 @@
     },
     {
       "path": "README.md",
-      "bytes": 9367,
-      "sha256": "a2239ee56ce1c178ceb111534e6b3047fcf1f90437763e5cf34cf7574b822f26"
+      "bytes": 9544,
+      "sha256": "e4de0246f10d762b540dcfd70485ab38dca2fa76edfdad6def366019443fcc4b"
     },
     {
       "path": "REPOSITORY_README.md",
-      "bytes": 9367,
-      "sha256": "a2239ee56ce1c178ceb111534e6b3047fcf1f90437763e5cf34cf7574b822f26"
+      "bytes": 9544,
+      "sha256": "e4de0246f10d762b540dcfd70485ab38dca2fa76edfdad6def366019443fcc4b"
     },
     {
       "path": "START_CONTROLLER.bat",
@@ -88,8 +88,8 @@
     },
     {
       "path": "SURE2_Planner.html",
-      "bytes": 773990,
-      "sha256": "51f0dae8b98645798cc173c2726ab41797c9d21ed2beeba448cf2578e21526cf"
+      "bytes": 774235,
+      "sha256": "a19cea4715fb53a6a74177bc38ef26ea578bda437381574f8e865c1c13123857"
     },
     {
       "path": "build_web_demo.py",
@@ -108,8 +108,8 @@
     },
     {
       "path": "docs/README.md",
-      "bytes": 3530,
-      "sha256": "49a8a1053f25b36f27d8f6f38a37cc624970720f350909f618282c97e5f05c2a"
+      "bytes": 3579,
+      "sha256": "a44877e5ee0c8873d0ed0d5cf9764f38480804c8c8c2f27d54ce2f21201d3e65"
     },
     {
       "path": "docs/debug.html",
@@ -118,8 +118,8 @@
     },
     {
       "path": "docs/index.html",
-      "bytes": 773155,
-      "sha256": "cb9b2015cae7176e8802a3162032e0de75cf7fa3ff585589211ccc3c2a2b280d"
+      "bytes": 773400,
+      "sha256": "56d95d4ba3796b088fe6954b027464e3c88d8d1093e68a4714ec4f2e2ed29806"
     },
     {
       "path": "docs/preview/assets.js",
@@ -148,8 +148,8 @@
     },
     {
       "path": "example_plan_2x6.json",
-      "bytes": 16985,
-      "sha256": "56cbf8cb963d45bcf0cfe282c979963b6f6b4ea8be99f5a1d04f16365e2d537e"
+      "bytes": 17118,
+      "sha256": "92542ade146496cfc8fb33d733d1f8711b6bb910da70cc1ed1c5d9a2ef090534"
     },
     {
       "path": "github-pages/.nojekyll",
@@ -158,8 +158,8 @@
     },
     {
       "path": "github-pages/README.md",
-      "bytes": 3530,
-      "sha256": "49a8a1053f25b36f27d8f6f38a37cc624970720f350909f618282c97e5f05c2a"
+      "bytes": 3579,
+      "sha256": "a44877e5ee0c8873d0ed0d5cf9764f38480804c8c8c2f27d54ce2f21201d3e65"
     },
     {
       "path": "github-pages/debug.html",
@@ -168,8 +168,8 @@
     },
     {
       "path": "github-pages/index.html",
-      "bytes": 773155,
-      "sha256": "cb9b2015cae7176e8802a3162032e0de75cf7fa3ff585589211ccc3c2a2b280d"
+      "bytes": 773400,
+      "sha256": "56d95d4ba3796b088fe6954b027464e3c88d8d1093e68a4714ec4f2e2ed29806"
     },
     {
       "path": "github-pages/preview/assets.js",
@@ -298,8 +298,8 @@
     },
     {
       "path": "tests/test_planner_dashboard.cjs",
-      "bytes": 22284,
-      "sha256": "6ab1be52523aec952308388ac97afaefea8dcf5ffcdcafb4e839f61e5bd0ee54"
+      "bytes": 22572,
+      "sha256": "372d39aab12dbfbd68cdae782c34317839d2f9245ad15ac90c17258a0044a5c5"
     },
     {
       "path": "tests/test_planner_dom.cjs",
@@ -309,7 +309,7 @@
     {
       "path": "tests/test_remote_browser.cjs",
       "bytes": 18210,
-      "sha256": "8f5c8c9db335f46ecb7c0deeee876b0adef7c643de4235f7be97df879f0261d2"
+      "sha256": "37c7cb46170bcf3a11efeedeee5253ef26d5587d95d1fa23b24d617c91c92a10"
     },
     {
       "path": "tests/test_remote_integration.py",

@@ -192,7 +192,7 @@ async function until(check, label) {
       await page.locator('#jsonBtn').click();const download=await downloadPromise;
       const file=path.join(output,'exported-design.json');await download.saveAs(file);
       exported=JSON.parse(fs.readFileSync(file,'utf8'));
-      assert.equal(exported.derived.samples.length,36);assert.equal(exported.derived.stationary_time_s,270);
+      assert.equal(exported.derived.samples.length,36);assert.equal(exported.derived.stationary_time_s,135);
       await page.locator('#importFile').setInputFiles(path.join(root,'example_plan.json'));
       await until(async()=> (await page.locator('#toast').innerText()).includes('Complete plan imported and validated'),'design import completed');
     });

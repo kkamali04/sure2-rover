@@ -15,15 +15,15 @@ const root=path.resolve(__dirname,'..');
   const openSettings=async()=>{if(!(await page.locator('#settingsDialog').isVisible()))await page.locator('#settingsBtn').click();};
   const reset=async()=>{if(await page.locator('#stopBtn').isEnabled())await page.locator('#stopBtn').click();if(await page.locator('#settingsDialog').isVisible())await page.locator('#closeSettings').click();await page.locator('#editTab').click();await openSettings();await page.locator('#resetBtn').click();await page.locator('#closeSettings').click();await page.locator('#topTab').click();};
   const test=async(name,run)=>{await run();passed.push(name);console.log('PASS '+name);};
-  await test('default 2 by 6 layout, three heights, 36 targets and real-time preview',async()=>{
+  await test('default 2 by 6 layout, three heights, 36 targets and default 5x preview',async()=>{
    const p=await plan();assert.equal(p.stations.length,12);assert.equal(new Set(p.stations.map(s=>s.y_mm)).size,2);
    assert.deepEqual(p.heights_mm,[150,350,550]);assert.equal(await page.locator('#sampleCount').innerText(),'36');
-   assert.equal(await page.locator('#simSpeed').inputValue(),'1');assert.equal(await page.locator('#handoffBtn').count(),0);
+   assert.equal(await page.locator('#simSpeed').inputValue(),'5');assert.equal(await page.locator('#handoffBtn').count(),0);
    assert.equal(await page.evaluate(()=>document.documentElement.scrollHeight<=innerHeight),true,'desktop dashboard fits one viewport');
   });
   await test('half-length point waits are editable and survive JSON export/import',async()=>{
-   await reset();let p=await plan();assert.equal(p.settle_s,2.5);assert(p.stations.every(s=>s.dwell_s===5));
-   await page.locator('#timingBtn').click();await page.locator('#settle').fill('1.5');await page.locator('#defaultDwell').fill('4');await page.locator('#applyDwell').click();await page.locator('#closeTiming').click();
+   await reset();let p=await plan();assert.equal(p.settle_s,1.25);assert(p.stations.every(s=>s.dwell_s===2.5));
+   await page.locator('#timingBtn').click();assert(await page.locator('#settle').evaluate(el=>el.checkValidity()));assert((await page.locator('#previewDuration').innerText()).includes('14:54 = 2:15 settle/dwell + 12:39 assumed motion'));assert((await page.locator('#previewDuration').innerText()).includes('At 5×: about 2:59'));await page.locator('#settle').fill('1.5');await page.locator('#defaultDwell').fill('4');await page.locator('#applyDwell').click();await page.locator('#closeTiming').click();
    p=await plan();assert.equal(p.settle_s,1.5);assert(p.stations.every(s=>s.dwell_s===4));assert.equal(await page.evaluate(()=>PlannerCore.stationaryTime(PlannerUI.getPlan())),198);
    await openSettings();const d=page.waitForEvent('download');await page.locator('#jsonBtn').click();const bytes=fs.readFileSync(await (await d).path());const saved=JSON.parse(bytes);assert.equal(saved.settle_s,1.5);assert(saved.stations.every(s=>s.dwell_s===4));await page.locator('#resetBtn').click();await page.locator('#importFile').setInputFiles({name:'timing.json',mimeType:'application/json',buffer:bytes});await page.waitForFunction(()=>PlannerUI.getPlan().settle_s===1.5);await page.locator('#closeSettings').click();await reset();
   });
@@ -97,7 +97,7 @@ const root=path.resolve(__dirname,'..');
   await test('slow preview has distinct lift, park, settle and dwell phases and freezes edits',async()=>{
    await reset();const events=await page.evaluate(()=>window.PlannerUI.previewEvents());
    assert.equal(events.filter(e=>e.phase==='Lift transition (assumed)').length,24);assert.equal(events.filter(e=>e.phase==='Lift park (assumed)').length,12);
-   assert(events.filter(e=>e.phase.includes('Lift')).every(e=>e.end-e.start===20));assert.equal(events.at(-1).end,1029);
+   assert(events.filter(e=>e.phase.includes('Lift')).every(e=>e.end-e.start===20));assert.equal(events.at(-1).end,894);
    await page.locator('#previewBtn').click();assert(await page.locator('#selectedX').isDisabled());assert(await page.locator('#deleteStation').isDisabled());
    await page.locator('#stopBtn').click();assert(await page.locator('#selectedX').isEnabled());
   });
@@ -144,7 +144,7 @@ const root=path.resolve(__dirname,'..');
   });
   await test('idle Next station starts paused, timeline End reaches final time, and Reset restores Pause label',async()=>{
    await reset();await page.locator('#previewTab').click();assert(await page.locator('#nextStationBtn').isEnabled());await page.locator('#nextStationBtn').click();await page.waitForFunction(()=>document.getElementById('simStatus').textContent.includes('S2'));
-   assert.equal(await page.locator('#pauseBtn').innerText(),'Resume');await page.locator('#previewTimeline').focus();await page.keyboard.press('End');await page.waitForFunction(()=>document.getElementById('simStatus').textContent.includes('Preview complete'));assert.equal(await page.locator('#previewClock').innerText(),'17:09 / 17:09');assert(await page.locator('#stopBtn').isEnabled());await page.locator('#stopBtn').click();assert.equal(await page.locator('#previewClock').innerText(),'0:00');assert.equal(await page.locator('#pauseBtn').innerText(),'Pause');
+   assert.equal(await page.locator('#pauseBtn').innerText(),'Resume');await page.locator('#previewTimeline').focus();await page.keyboard.press('End');await page.waitForFunction(()=>document.getElementById('simStatus').textContent.includes('Preview complete'));assert.equal(await page.locator('#previewClock').innerText(),'14:54 / 14:54');assert(await page.locator('#stopBtn').isEnabled());await page.locator('#stopBtn').click();assert.equal(await page.locator('#previewClock').innerText(),'0:00');assert.equal(await page.locator('#pauseBtn').innerText(),'Pause');
    await page.locator('#previewBtn').click();await page.locator('#pauseBtn').click();await page.locator('#stopBtn').click();assert.equal(await page.locator('#pauseBtn').innerText(),'Pause');await page.locator('#editTab').click();
   });
   await test('compact homepage hides settings and imports; debug tab opens the remote UI directly',async()=>{

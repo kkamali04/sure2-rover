@@ -46,22 +46,22 @@ No sequence of planner points is executed automatically. Accurate physical XY, l
 
 ## Timing
 
-Defaults: **2.5 s settle + 5 s dwell per point**. Click **Timing** to edit them. Settling updates immediately; **Apply dwell to all stations** updates every station. Right-click a station to set its own dwell. Imported plans retain their saved values; imports are not silently halved.
+Defaults: **1.25 s settle + 2.5 s dwell per point**, with **5× playback**. Click **Timing** to edit the waits and see the time breakdown. Settling updates immediately; **Apply dwell to all stations** updates every station. Right-click a station to set its own dwell. Imported plans retain their saved values; imports are not silently halved.
 
 | Part of the default 36-point preview | Time |
 |---|---:|
-| Settle + dwell: 36 × 7.5 s | 270 s (4:30) |
+| Settle + dwell: 36 × 3.75 s | 135 s (2:15) |
 | Lift between heights: 24 × 20 s | 480 s |
 | Park lift: 12 × 20 s | 240 s |
 | Travel: 11 × 3 s | 33 s |
 | Two 90° turns: 2 × 3 s | 6 s |
-| **Total at 1×** | **1029 s (17:09)** |
+| **Total at 1×** | **894 s (14:54)** |
 
-At 60×, playback takes about 17 seconds without changing the plan. Halving point waits does not halve lift/travel time. Motion durations are editable visual assumptions, not measured actuator speeds; dwell is elapsed time, not evidence of acquired samples.
+At the default **5×**, playback takes about **2:59**; at 60× it takes about 15 seconds. Playback speed changes only the animation. Halving point waits does not halve lift/travel time: the original 21:39 included 9:00 of waits plus 12:39 of motion assumptions; the first halving made 17:09, and the second makes 14:54. Motion durations are editable visual assumptions, not measured actuator speeds; dwell is elapsed time, not evidence of acquired samples.
 
 ## Publish this full repository on GitHub Pages
 
-With Git and GitHub CLI installed, run **PUBLISH_GITHUB.bat** from this package in your own Windows session. It uses your signed-in GitHub account, creates the public `sure2-rover` repository, pushes only manifest-listed files, verifies the remote commit, enables Pages from `main /docs`, and prints the links. If needed, first run `gh auth login --hostname github.com --web`. The publisher checks package hashes, enables size hooks, stops on errors and never force-pushes. It does not publish the parent college repository. This network workflow could not be exercised in the restricted development session; a printed verified result requires an actual successful deployment.
+With Git and GitHub CLI installed, run **PUBLISH_GITHUB.bat** from the prepared release package. It uses your signed-in GitHub account, creates the public `sure2-rover` repository, pushes only manifest-listed files, verifies the remote commit, enables Pages from `main /docs`, and prints the links. If needed, first run `gh auth login --hostname github.com --web`. The publisher checks package hashes, enables size hooks, stops on errors and never force-pushes. It does not publish the parent college repository. Initial repository creation, push and Pages deployment were verified on 2026-10-07.
 
 Manual alternative:
 

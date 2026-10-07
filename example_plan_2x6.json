@@ -39,79 +39,79 @@
     350,
     550
   ],
-  "settle_s": 2.5,
+  "settle_s": 1.25,
   "stations": [
     {
       "id": "S1",
       "x_mm": 277.763,
       "y_mm": 259.158,
-      "dwell_s": 5
+      "dwell_s": 2.5
     },
     {
       "id": "S2",
       "x_mm": 526.658,
       "y_mm": 259.158,
-      "dwell_s": 5
+      "dwell_s": 2.5
     },
     {
       "id": "S3",
       "x_mm": 775.553,
       "y_mm": 259.158,
-      "dwell_s": 5
+      "dwell_s": 2.5
     },
     {
       "id": "S4",
       "x_mm": 1024.447,
       "y_mm": 259.158,
-      "dwell_s": 5
+      "dwell_s": 2.5
     },
     {
       "id": "S5",
       "x_mm": 1273.342,
       "y_mm": 259.158,
-      "dwell_s": 5
+      "dwell_s": 2.5
     },
     {
       "id": "S6",
       "x_mm": 1522.237,
       "y_mm": 259.158,
-      "dwell_s": 5
+      "dwell_s": 2.5
     },
     {
       "id": "S7",
       "x_mm": 1522.237,
       "y_mm": 370.842,
-      "dwell_s": 5
+      "dwell_s": 2.5
     },
     {
       "id": "S8",
       "x_mm": 1273.342,
       "y_mm": 370.842,
-      "dwell_s": 5
+      "dwell_s": 2.5
     },
     {
       "id": "S9",
       "x_mm": 1024.447,
       "y_mm": 370.842,
-      "dwell_s": 5
+      "dwell_s": 2.5
     },
     {
       "id": "S10",
       "x_mm": 775.553,
       "y_mm": 370.842,
-      "dwell_s": 5
+      "dwell_s": 2.5
     },
     {
       "id": "S11",
       "x_mm": 526.658,
       "y_mm": 370.842,
-      "dwell_s": 5
+      "dwell_s": 2.5
     },
     {
       "id": "S12",
       "x_mm": 277.763,
       "y_mm": 370.842,
-      "dwell_s": 5
+      "dwell_s": 2.5
     }
   ],
   "motion": {
@@ -125,7 +125,7 @@
     "lift_transition_s": 20,
     "rover_transition_s": 3
   },
-  "exported_at": "2026-10-07T20:15:56.699Z",
+  "exported_at": "2026-10-07T21:15:59.149Z",
   "derived": {
     "samples": [
       {
@@ -138,8 +138,8 @@
         "probe_x_mm": 277.763,
         "probe_y_mm": 259.158,
         "z_mm": 150,
-        "settle_s": 2.5,
-        "dwell_s": 5
+        "settle_s": 1.25,
+        "dwell_s": 2.5
       },
       {
         "sample_id": "S1-Z2",
@@ -151,8 +151,8 @@
         "probe_x_mm": 277.763,
         "probe_y_mm": 259.158,
         "z_mm": 350,
-        "settle_s": 2.5,
-        "dwell_s": 5
+        "settle_s": 1.25,
+        "dwell_s": 2.5
       },
       {
         "sample_id": "S1-Z3",
@@ -164,8 +164,8 @@
         "probe_x_mm": 277.763,
         "probe_y_mm": 259.158,
         "z_mm": 550,
-        "settle_s": 2.5,
-        "dwell_s": 5
+        "settle_s": 1.25,
+        "dwell_s": 2.5
       },
       {
         "sample_id": "S2-Z1",
@@ -177,8 +177,8 @@
         "probe_x_mm": 526.658,
         "probe_y_mm": 259.158,
         "z_mm": 150,
-        "settle_s": 2.5,
-        "dwell_s": 5
+        "settle_s": 1.25,
+        "dwell_s": 2.5
       },
       {
         "sample_id": "S2-Z2",
@@ -190,8 +190,8 @@
         "probe_x_mm": 526.658,
         "probe_y_mm": 259.158,
         "z_mm": 350,
-        "settle_s": 2.5,
-        "dwell_s": 5
+        "settle_s": 1.25,
+        "dwell_s": 2.5
       },
       {
         "sample_id": "S2-Z3",
@@ -203,8 +203,8 @@
         "probe_x_mm": 526.658,
         "probe_y_mm": 259.158,
         "z_mm": 550,
-        "settle_s": 2.5,
-        "dwell_s": 5
+        "settle_s": 1.25,
+        "dwell_s": 2.5
       },
       {
         "sample_id": "S3-Z1",
@@ -216,8 +216,8 @@
         "probe_x_mm": 775.553,
         "probe_y_mm": 259.158,
         "z_mm": 150,
-        "settle_s": 2.5,
-        "dwell_s": 5
+        "settle_s": 1.25,
+        "dwell_s": 2.5
       },
       {
         "sample_id": "S3-Z2",
@@ -229,8 +229,8 @@
         "probe_x_mm": 775.553,
         "probe_y_mm": 259.158,
         "z_mm": 350,
-        "settle_s": 2.5,
-        "dwell_s": 5
+        "settle_s": 1.25,
+        "dwell_s": 2.5
       },
       {
         "sample_id": "S3-Z3",
@@ -242,8 +242,8 @@
         "probe_x_mm": 775.553,
         "probe_y_mm": 259.158,
         "z_mm": 550,
-        "settle_s": 2.5,
-        "dwell_s": 5
+        "settle_s": 1.25,
+        "dwell_s": 2.5
       },
       {
         "sample_id": "S4-Z1",
@@ -255,8 +255,8 @@
         "probe_x_mm": 1024.447,
         "probe_y_mm": 259.158,
         "z_mm": 150,
-        "settle_s": 2.5,
-        "dwell_s": 5
+        "settle_s": 1.25,
+        "dwell_s": 2.5
       },
       {
         "sample_id": "S4-Z2",
@@ -268,8 +268,8 @@
         "probe_x_mm": 1024.447,
         "probe_y_mm": 259.158,
         "z_mm": 350,
-        "settle_s": 2.5,
-        "dwell_s": 5
+        "settle_s": 1.25,
+        "dwell_s": 2.5
       },
       {
         "sample_id": "S4-Z3",
@@ -281,8 +281,8 @@
         "probe_x_mm": 1024.447,
         "probe_y_mm": 259.158,
         "z_mm": 550,
-        "settle_s": 2.5,
-        "dwell_s": 5
+        "settle_s": 1.25,
+        "dwell_s": 2.5
       },
       {
         "sample_id": "S5-Z1",
@@ -294,8 +294,8 @@
         "probe_x_mm": 1273.342,
         "probe_y_mm": 259.158,
         "z_mm": 150,
-        "settle_s": 2.5,
-        "dwell_s": 5
+        "settle_s": 1.25,
+        "dwell_s": 2.5
       },
       {
         "sample_id": "S5-Z2",
@@ -307,8 +307,8 @@
         "probe_x_mm": 1273.342,
         "probe_y_mm": 259.158,
         "z_mm": 350,
-        "settle_s": 2.5,
-        "dwell_s": 5
+        "settle_s": 1.25,
+        "dwell_s": 2.5
       },
       {
         "sample_id": "S5-Z3",
@@ -320,8 +320,8 @@
         "probe_x_mm": 1273.342,
         "probe_y_mm": 259.158,
         "z_mm": 550,
-        "settle_s": 2.5,
-        "dwell_s": 5
+        "settle_s": 1.25,
+        "dwell_s": 2.5
       },
       {
         "sample_id": "S6-Z1",
@@ -333,8 +333,8 @@
         "probe_x_mm": 1522.237,
         "probe_y_mm": 259.158,
         "z_mm": 150,
-        "settle_s": 2.5,
-        "dwell_s": 5
+        "settle_s": 1.25,
+        "dwell_s": 2.5
       },
       {
         "sample_id": "S6-Z2",
@@ -346,8 +346,8 @@
         "probe_x_mm": 1522.237,
         "probe_y_mm": 259.158,
         "z_mm": 350,
-        "settle_s": 2.5,
-        "dwell_s": 5
+        "settle_s": 1.25,
+        "dwell_s": 2.5
       },
       {
         "sample_id": "S6-Z3",
@@ -359,8 +359,8 @@
         "probe_x_mm": 1522.237,
         "probe_y_mm": 259.158,
         "z_mm": 550,
-        "settle_s": 2.5,
-        "dwell_s": 5
+        "settle_s": 1.25,
+        "dwell_s": 2.5
       },
       {
         "sample_id": "S7-Z1",
@@ -372,8 +372,8 @@
         "probe_x_mm": 1522.237,
         "probe_y_mm": 370.842,
         "z_mm": 150,
-        "settle_s": 2.5,
-        "dwell_s": 5
+        "settle_s": 1.25,
+        "dwell_s": 2.5
       },
       {
         "sample_id": "S7-Z2",
@@ -385,8 +385,8 @@
         "probe_x_mm": 1522.237,
         "probe_y_mm": 370.842,
         "z_mm": 350,
-        "settle_s": 2.5,
-        "dwell_s": 5
+        "settle_s": 1.25,
+        "dwell_s": 2.5
       },
       {
         "sample_id": "S7-Z3",
@@ -398,8 +398,8 @@
         "probe_x_mm": 1522.237,
         "probe_y_mm": 370.842,
         "z_mm": 550,
-        "settle_s": 2.5,
-        "dwell_s": 5
+        "settle_s": 1.25,
+        "dwell_s": 2.5
       },
       {
         "sample_id": "S8-Z1",
@@ -411,8 +411,8 @@
         "probe_x_mm": 1273.342,
         "probe_y_mm": 370.842,
         "z_mm": 150,
-        "settle_s": 2.5,
-        "dwell_s": 5
+        "settle_s": 1.25,
+        "dwell_s": 2.5
       },
       {
         "sample_id": "S8-Z2",
@@ -424,8 +424,8 @@
         "probe_x_mm": 1273.342,
         "probe_y_mm": 370.842,
         "z_mm": 350,
-        "settle_s": 2.5,
-        "dwell_s": 5
+        "settle_s": 1.25,
+        "dwell_s": 2.5
       },
       {
         "sample_id": "S8-Z3",
@@ -437,8 +437,8 @@
         "probe_x_mm": 1273.342,
         "probe_y_mm": 370.842,
         "z_mm": 550,
-        "settle_s": 2.5,
-        "dwell_s": 5
+        "settle_s": 1.25,
+        "dwell_s": 2.5
       },
       {
         "sample_id": "S9-Z1",
@@ -450,8 +450,8 @@
         "probe_x_mm": 1024.447,
         "probe_y_mm": 370.842,
         "z_mm": 150,
-        "settle_s": 2.5,
-        "dwell_s": 5
+        "settle_s": 1.25,
+        "dwell_s": 2.5
       },
       {
         "sample_id": "S9-Z2",
@@ -463,8 +463,8 @@
         "probe_x_mm": 1024.447,
         "probe_y_mm": 370.842,
         "z_mm": 350,
-        "settle_s": 2.5,
-        "dwell_s": 5
+        "settle_s": 1.25,
+        "dwell_s": 2.5
       },
       {
         "sample_id": "S9-Z3",
@@ -476,8 +476,8 @@
         "probe_x_mm": 1024.447,
         "probe_y_mm": 370.842,
         "z_mm": 550,
-        "settle_s": 2.5,
-        "dwell_s": 5
+        "settle_s": 1.25,
+        "dwell_s": 2.5
       },
       {
         "sample_id": "S10-Z1",
@@ -489,8 +489,8 @@
         "probe_x_mm": 775.553,
         "probe_y_mm": 370.842,
         "z_mm": 150,
-        "settle_s": 2.5,
-        "dwell_s": 5
+        "settle_s": 1.25,
+        "dwell_s": 2.5
       },
       {
         "sample_id": "S10-Z2",
@@ -502,8 +502,8 @@
         "probe_x_mm": 775.553,
         "probe_y_mm": 370.842,
         "z_mm": 350,
-        "settle_s": 2.5,
-        "dwell_s": 5
+        "settle_s": 1.25,
+        "dwell_s": 2.5
       },
       {
         "sample_id": "S10-Z3",
@@ -515,8 +515,8 @@
         "probe_x_mm": 775.553,
         "probe_y_mm": 370.842,
         "z_mm": 550,
-        "settle_s": 2.5,
-        "dwell_s": 5
+        "settle_s": 1.25,
+        "dwell_s": 2.5
       },
       {
         "sample_id": "S11-Z1",
@@ -528,8 +528,8 @@
         "probe_x_mm": 526.658,
         "probe_y_mm": 370.842,
         "z_mm": 150,
-        "settle_s": 2.5,
-        "dwell_s": 5
+        "settle_s": 1.25,
+        "dwell_s": 2.5
       },
       {
         "sample_id": "S11-Z2",
@@ -541,8 +541,8 @@
         "probe_x_mm": 526.658,
         "probe_y_mm": 370.842,
         "z_mm": 350,
-        "settle_s": 2.5,
-        "dwell_s": 5
+        "settle_s": 1.25,
+        "dwell_s": 2.5
       },
       {
         "sample_id": "S11-Z3",
@@ -554,8 +554,8 @@
         "probe_x_mm": 526.658,
         "probe_y_mm": 370.842,
         "z_mm": 550,
-        "settle_s": 2.5,
-        "dwell_s": 5
+        "settle_s": 1.25,
+        "dwell_s": 2.5
       },
       {
         "sample_id": "S12-Z1",
@@ -567,8 +567,8 @@
         "probe_x_mm": 277.763,
         "probe_y_mm": 370.842,
         "z_mm": 150,
-        "settle_s": 2.5,
-        "dwell_s": 5
+        "settle_s": 1.25,
+        "dwell_s": 2.5
       },
       {
         "sample_id": "S12-Z2",
@@ -580,8 +580,8 @@
         "probe_x_mm": 277.763,
         "probe_y_mm": 370.842,
         "z_mm": 350,
-        "settle_s": 2.5,
-        "dwell_s": 5
+        "settle_s": 1.25,
+        "dwell_s": 2.5
       },
       {
         "sample_id": "S12-Z3",
@@ -593,12 +593,12 @@
         "probe_x_mm": 277.763,
         "probe_y_mm": 370.842,
         "z_mm": 550,
-        "settle_s": 2.5,
-        "dwell_s": 5
+        "settle_s": 1.25,
+        "dwell_s": 2.5
       }
     ],
     "sample_count": 36,
-    "stationary_time_s": 270,
+    "stationary_time_s": 135,
     "rover_path_length_mm": 2600.632,
     "route_preview": [
       {
