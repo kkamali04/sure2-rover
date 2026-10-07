@@ -1,0 +1,6 @@
+#!/bin/sh
+hook_dir=$(dirname "$0")
+if command -v python >/dev/null 2>&1; then
+    exec python "$hook_dir/check_large_files.py" staged
+fi
+exec python3 "$hook_dir/check_large_files.py" staged

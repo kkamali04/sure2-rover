@@ -1,0 +1,3 @@
+# Only needed for USB serial tests and port listing.
+# HTML planning, Python dry runs, and HTTP bench tests use no Python dependencies.
+pyserial>=3.5,<4

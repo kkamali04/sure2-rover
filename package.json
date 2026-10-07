@@ -1,0 +1,10 @@
+{
+  "private": true,
+  "scripts": {
+    "test:e2e": "python run_e2e.py",
+    "test:browser": "node tests/test_remote_browser.cjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.63.0"
+  }
+}
