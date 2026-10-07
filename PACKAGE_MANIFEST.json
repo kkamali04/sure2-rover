@@ -37,19 +37,24 @@
       "sha256": "5d8b1bd9f7a7e6b1c2a2c5313acc3e5489d56f98ed08af694ce1d1f24c76e5e9"
     },
     {
+      "path": "PROJECT_STATE.md",
+      "bytes": 1719,
+      "sha256": "febe632ee4f14ff79774d55f974816378db7f193bfb95c1e1155efffbfd06c46"
+    },
+    {
       "path": "PUBLISH_GITHUB.bat",
       "bytes": 168,
       "sha256": "029d7408f4f6697e68710b9f5a02176fc9a67780b1be4961c2e3d7704d706077"
     },
     {
       "path": "README.md",
-      "bytes": 9019,
-      "sha256": "3068d0fb4f2d1e71c9eade55783b8e2f6a8b60c7c7c5f66003df84fc5ea74466"
+      "bytes": 9367,
+      "sha256": "a2239ee56ce1c178ceb111534e6b3047fcf1f90437763e5cf34cf7574b822f26"
     },
     {
       "path": "REPOSITORY_README.md",
-      "bytes": 9019,
-      "sha256": "3068d0fb4f2d1e71c9eade55783b8e2f6a8b60c7c7c5f66003df84fc5ea74466"
+      "bytes": 9367,
+      "sha256": "a2239ee56ce1c178ceb111534e6b3047fcf1f90437763e5cf34cf7574b822f26"
     },
     {
       "path": "START_CONTROLLER.bat",

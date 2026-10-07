@@ -2,6 +2,8 @@
 
 Edit rover stations and probe heights in 2D, preview the same plan in 3D, and use a separate local manual controller for a WAVE ROVER. The default is **2 rows × 6 stations × 3 heights = 36 planned points**. XY and heights are millimeters. The preview uses the supplied cabinet/rover concept design.
 
+**[Open the public planner and 3D demo](https://kkamali04.github.io/sure2-rover/)** · **[Download for Windows](https://github.com/kkamali04/sure2-rover/archive/refs/heads/main.zip)**
+
 ## Try it without a rover
 
 Open **SURE2_Planner.html** in Chrome or Edge, or use the repository's GitHub Pages link. No installation or account is required for browser planning.
@@ -68,7 +70,7 @@ Manual alternative:
 3. When deployment completes, click **Visit site** and share that URL with the professor. Its usual form is `https://YOUR-ACCOUNT.github.io/sure2-rover/`.
 4. The full source and launcher stay in the repository; only `docs` is the Pages site. Anyone who wants the local controller uses **Code → Download ZIP**, extracts it and runs SURE2.bat.
 
-Nothing is already published by this package. No custom domain is required. GitHub Pages serves static HTML/JavaScript and cannot run the Python controller. References: [create a Pages site](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site), [choose a publishing source](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site) (checked 2026-10-07).
+The project repository is [kkamali04/sure2-rover](https://github.com/kkamali04/sure2-rover); its Pages preview is linked above. The publishing instructions also apply to a separate copy under another account. No custom domain is required. GitHub Pages serves static HTML/JavaScript and cannot run the Python controller. References: [create a Pages site](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site), [choose a publishing source](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site) (checked 2026-10-07).
 
 ## Development and verification
 
